@@ -1,7 +1,7 @@
 // Department Constructor
 class Department {
     constructor(name) {
-        this,name = name;
+        this.name = name;
     }
 };
 
