@@ -74,27 +74,42 @@ function chooseAction() {
           console.log(choice);
       }
     });
-};
+}
 
 // Query to get information regarding the department from the employees database
 function viewDepartments() {
-    db.query('SELECT * FROM department', (err, res) => {
-        if (err) { throw err; }
-        console.table(res);
-        chooseAction();
-    });
-}; 
+  db.query(`SELECT * FROM department`, (err, res) => {
+    if (err) {
+      throw err;
+    }
+    console.table(res);
+    chooseAction();
+  });
+}
 
 // Query to get information regarding roles from the employees database
 function viewRoles() {
-    db.query('SELECT * FROM roles', (err, res) => {
-        if (err) { throw err; }
-        console.table(res);
-        chooseAction();
-    });
-};
+  db.query(`SELECT * FROM roles`, (err, res) => {
+    if (err) {
+      throw err;
+    }
+    console.table(res);
+    chooseAction();
+  });
+}
 
-// 
+// Query to get information regarding all employees from the employees database
+function viewEmployees() {
+  db.query(`SELECT employees.id, employees.first_name, employees.last_name, roles.title, department_name, roles.salary, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager 
+  FROM employees 
+  INNER JOIN roles on roles.id = employees.role_id 
+  INNER JOIN department on department.id = roles.department_id 
+  LEFT JOIN employees e on employees.manager_id = e.id;`, (err, res) => {
+    if (err) {
+      throw err;
+    }
+    console.table(res);
+    chooseAction();
+  });
+}
 
-
-  
