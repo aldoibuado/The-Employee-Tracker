@@ -68,8 +68,8 @@ function chooseAction() {
           break;
 
         case "Delete a department" :
-            deleteDepartment();
-            break;
+          deleteDepartment();
+          break;
 
         case "Quit":
           db.end();
@@ -153,19 +153,19 @@ const addRole = () => {
             message: "What is the name of the role",
         },
         {
-            type: "input",
+            type: "number",
             name: "salary",
             message: "What is the salary of the role?",
         },
         {
-            type: "input",
-            name: "departmentID",
+            type: "number",
+            name: "department_id",
             message: "What department does the role belong to?"
         }
     ])
     .then(res => {
         db.query(`INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`,
-        [res.rolestitle, res.salary, res.department_id],
+        [res.title, res.salary, res.department_id],
         (err, res) => {
             if (err) {
                 throw err;
@@ -177,4 +177,68 @@ const addRole = () => {
     });
 };
 
+// will help user add a new employee
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "first_name",
+            message: "What is the employee's first name?",
+        },
+        {
+            type: "input",
+            name: "last_name",
+            message: "What is the employees last name?",
+        },
+        {
+            type: "input",
+            name: "role_id",
+            message: "What is the employees role?",
+        },
+        {
+            type: "input",
+            name: "manager_id",
+            message: "Who is the employee's manager?"
+        }
+    ])
+    .then(res => {
+        db.query(`INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`,
+        [res.first_name, res.last_name, res.role_id, res.manager_id],
+        (err, res) => {
+            if (err) {
+                throw err;
+            }
+            console.log("Added employee");
+            chooseAction();
+        }
+      );
+    });
+};
 
+// will update new role
+const updateRole = () => {
+    inquirer.prompt([
+        {
+            type: "number",
+            name: "id",
+            message: "Input employee id",
+        },
+        {
+            type: "number",
+            name: "role_id",
+            message: "Input new role id"
+        }
+    ])
+    .then(res => {
+        db.query(`Update employee SET role_id=?, WHERE id=?)`,
+        [res.id, res.role_id],
+        (err, res) => {
+            if (err) {
+                throw err;
+            }
+            console.log("Updated Employee");
+            chooseAction();
+        }
+       );
+    });
+};    
